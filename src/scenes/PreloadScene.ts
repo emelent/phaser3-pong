@@ -2,9 +2,9 @@ import { Scene } from 'phaser'
 import { GameScene } from './GameScene'
 import { images, sounds } from '../asset-keys'
 
-import beep from '../assets/sounds/beep.ogg'
-import peep from '../assets/sounds/peep.ogg'
-import plop from '../assets/sounds/plop.ogg'
+import beep from '../assets/sounds/beep.m4a'
+import peep from '../assets/sounds/peep.m4a'
+import plop from '../assets/sounds/plop.m4a'
 
 export class PreloadScene extends Scene {
     constructor() {
