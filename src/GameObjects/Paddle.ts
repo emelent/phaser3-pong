@@ -31,13 +31,14 @@ export abstract class Paddle extends Phaser.Physics.Arcade.Image {
 
 
     public launchBall = () => {
-        if (!this.ballOnPaddle) return
-        const angle = 45 * (Math.floor(Math.random() * 2) == 0 ? 1 : -1)
+        if (!this.ballOnPaddle || !this.ball) return
+        const angle = -45//45 * (Math.floor(Math.random() * 2) == 0 ? 1 : -1)
         const launchVel = new Phaser.Math.Vector2(0, -1)
             .rotate(Phaser.Math.DegToRad(angle))
             .scale(this.launchSpeed)
 
+        this.ball.setVelocity(launchVel.x, launchVel.y)
+        this.ball.inPlay = true
         this.ballOnPaddle = false
-        this.ball?.setVelocity(launchVel.x, launchVel.y)
     }
 }

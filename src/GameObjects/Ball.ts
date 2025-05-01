@@ -6,6 +6,7 @@ export class Ball extends Phaser.Physics.Arcade.Image {
     declare body: Phaser.Physics.Arcade.Body
 
     public offScreen = false
+    public inPlay = false
 
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, images.block)
