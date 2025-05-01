@@ -23,7 +23,7 @@ export class AiPaddle extends Paddle {
         //     .setStrokeStyle(1, 0xffffff, 1)
         // this.movementMeterFill = scene.add.rectangle(x, y + this.displayHeight + 20, 40, 8, 0xff00ff, 1)
         //     .setOrigin(0.5, 0)
-        this.restX = scene.scale.width / 2
+        this.restX = scene.scale.width / 2;
     }
 
 
