@@ -4,7 +4,8 @@ import { PhaserAudio } from '../types'
 import { Ball } from '../GameObjects/Ball'
 import { PlayerPaddle } from '../GameObjects/PlayerPaddle'
 import { AiPaddle } from '../GameObjects/AiPaddle'
-
+import { Paddle } from '../GameObjects/Paddle'
+import { UnbeatableAiBrain } from '../GameObjects/AdeptAiBrain'
 
 export class GameScene extends Scene {
     ball!: Ball
@@ -32,12 +33,22 @@ export class GameScene extends Scene {
         this.plop = this.sound.add(sounds.plop)
 
         // create paddles
-        this.player = new PlayerPaddle(this, this.scale.width / 2, this.scale.height)
+        this.player = new PlayerPaddle(
+            this,
+            this.scale.width / 2,
+            this.scale.height
+        )
         this.ai = new AiPaddle(this, this.scale.width / 2, 0)
+            .attachBrain(new UnbeatableAiBrain())
             .setOrigin(0.5, 0)
+            .showDebug(true)
 
         // create ball
-        this.ball = new Ball(this, this.player.x, this.scale.height - this.player.displayHeight)
+        this.ball = new Ball(
+            this,
+            this.player.x,
+            this.scale.height - this.player.displayHeight
+        )
 
         // set ball
         this.ai.ball = this.ball
@@ -45,24 +56,27 @@ export class GameScene extends Scene {
         this.player.ballOnPaddle = true
 
         // setup collisions
+        const paddles = this.physics.add.group([this.player, this.ai])
         this.physics.world.setBoundsCollision(true, true, false, false)
-        this.physics.add.collider(this.player, this.ball, undefined, () => {
-            this.plop.play()
-        })
+        this.physics.add.collider(paddles, this.ball, (ballObj, paddleObj) => {
+            const ball = ballObj as Ball
+            const paddle = paddleObj as Paddle
 
-        this.physics.add.collider(this.ai, this.ball, undefined, () => {
-            this.plop.play()
+            if (ball.inPlay)
+                this.plop.play({ rate: 0.5 + Math.random() * 0.5, volume: 0.2 })
+
+            const dir = ball.x < paddle.x ? -1 : 1
+            ball.setVelocityX(Math.abs(ball.body.velocity.x) * dir)
         })
 
         this.physics.world.on('worldbounds', (body: Physics.Arcade.Body) => {
-            if (body.gameObject === this.ball && !this.ball.inPlay) {
-                this.plop.play()
+            if (body.gameObject === this.ball && this.ball.inPlay) {
+                this.plop.play({ rate: 0.5 + Math.random() * 0.5, volume: 0.2 })
             }
         })
     }
 
     update() {
-
         if (this.player.ballOnPaddle) {
             this.ball.x = this.player.x
         } else if (this.ball.inPlay) {
@@ -85,5 +99,4 @@ export class GameScene extends Scene {
 
         this.player.ballOnPaddle = true
     }
-
 }

@@ -7,6 +7,7 @@ export class Ball extends Phaser.Physics.Arcade.Image {
 
     public offScreen = false
     public inPlay = false
+    // private velocityText: Phaser.GameObjects.Text
 
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, images.block)
@@ -23,6 +24,15 @@ export class Ball extends Phaser.Physics.Arcade.Image {
             .setTint(0xff0000)
 
         this.body.onWorldBounds = true
+
+        // Create velocity text
+        // this.velocityText = scene.add.text(x, y - 20, '', {
+        //     fontSize: '16px',
+        //     color: '#ffffff',
+        //     backgroundColor: '#000000',
+        //     padding: { x: 4, y: 2 }
+        // })
+        // this.velocityText.setOrigin(0.5)
     }
 
     preUpdate(_time: number, _delta: number): void {
@@ -35,5 +45,14 @@ export class Ball extends Phaser.Physics.Arcade.Image {
             bounds.bottom < camera.worldView.top ||
             bounds.top > camera.worldView.bottom;
 
+        // Update velocity text position and content
+        // const {x, y} = this.body.velocity
+        // this.velocityText.setPosition(this.x, this.y - 20)
+        // this.velocityText.setText(`[${x}, ${y}]`)
+    }
+
+    destroy(): void {
+        // this.velocityText.destroy()
+        super.destroy()
     }
 }
