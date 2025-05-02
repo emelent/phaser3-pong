@@ -41,7 +41,7 @@ export class GameScene extends Scene {
         this.ai = new AiPaddle(this, this.scale.width / 2, 0)
             .attachBrain(new UnbeatableAiBrain())
             .setOrigin(0.5, 0)
-            .showDebug(true)
+        // .showDebug(true)
 
         // create ball
         this.ball = new Ball(
