@@ -21,8 +21,6 @@ export abstract class Paddle extends Phaser.Physics.Arcade.Image {
             .setPushable(false)
             .setGravity(0)
             .setCollideWorldBounds(true)
-
-        this.body.onWorldBounds = true
     }
 
     public launchBall = () => {
