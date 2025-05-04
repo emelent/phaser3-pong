@@ -1,4 +1,3 @@
-import { Scene } from 'phaser'
 import { AiPaddle } from './AiPaddle'
 
 export class AiBrain {
@@ -13,6 +12,7 @@ export class AiBrain {
     protected movementMeterOutline!: Phaser.GameObjects.Rectangle
     protected movementMeterFill!: Phaser.GameObjects.Rectangle
     protected ballResponseRangeRect!: Phaser.GameObjects.Rectangle
+    protected returnTween?: Phaser.Tweens.Tween
 
     private _ballResponseRange = 0.85
     public get ballResponseRange(): number {
@@ -104,15 +104,15 @@ export class AiBrain {
             )
         }
 
-        if (!ball.inPlay) {
-            // return paddle to center if ball out of play
-            paddle.setVelocity(0)
-            this.moveTime = 0
-            const diff = this.restX - paddle.x
-            if (Math.abs(diff) < 10) {
-                return
+        if (!ball.inPlay && paddle.x != this.restX) {
+            if (!this.returnTween || !this.returnTween.isPlaying()) {
+                this.returnTween = scene.tweens.add({
+                    targets: paddle,
+                    x: this.restX,
+                    duration: 1200,
+                    ease: 'Cubic.Out',
+                })
             }
-            paddle.x += diff * 0.01
             return
         }
 
